@@ -26,7 +26,7 @@ export const useTool = () => {
           setTool(Tool.PENCIL);
           break;
         case "7":
-          setTool(Tool.LINE);
+          setTool(Tool.ERASER);
           break;
       }
     };

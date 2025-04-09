@@ -6,6 +6,7 @@ export enum Tool {
   TEXT = "TEXT",
   PENCIL = "PENCIL",
   LINE = "LINE",
+  ERASER = "ERASER",
 }
 
 export enum ShapeType {

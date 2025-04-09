@@ -12,9 +12,10 @@ interface ShapeOptionsProps {
   deleteShapes: () => void;
 }
 
-const strokeColors = ["white", "red", "black", "blue"];
+const strokeColors = ["white", "#eb7c7c", "black", "#488ac7"];
 const backgroundColors = [...strokeColors, "transparent"];
 const cornerRadius = [0, 5, 10];
+const strokeWidth = [3, 6, 9, 12];
 
 const ShapeOptions: FC<ShapeOptionsProps> = ({
   onApplyStyles,
@@ -48,6 +49,12 @@ const ShapeOptions: FC<ShapeOptionsProps> = ({
       title: "Corner radius",
       options: cornerRadius,
       key: "cornerRadius",
+      type: "text",
+    },
+    {
+      title: "stroke width",
+      options: strokeWidth,
+      key: "strokeWidth",
       type: "text",
     },
   ];
@@ -116,7 +123,10 @@ const ShapeOptions: FC<ShapeOptionsProps> = ({
       )}
 
       {activeShapes.length > 0 && (
-        <Button onClick={deleteShapes} className="bg-red-100 mr-auto mt-6 hover:text-red-100 hover:bg-red-600 text-red-600">
+        <Button
+          onClick={deleteShapes}
+          className="bg-red-100 mr-auto mt-6 hover:text-red-100 hover:bg-red-600 text-red-600"
+        >
           <FontAwesomeIcon icon={faTrashAlt} />
         </Button>
       )}

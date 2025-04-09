@@ -63,7 +63,7 @@ export const useMouseArea = ({
         type: ShapeType.TEXT,
         ...pos,
         id: uuidv4(),
-        text: "Dev Routine",
+        text: "enter text",
         ...style,
       };
       onAppendShape(shape);

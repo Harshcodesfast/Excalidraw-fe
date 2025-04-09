@@ -28,33 +28,49 @@ function App() {
   const [defaultStyle, setDefaultStyle] = useState<ShapeStyle>({
     fill: "transparent",
     stroke: "white",
-    strokeWidth: 7,
+    strokeWidth: 3,
     fontSize: 20,
     cornerRadius: 10,
   });
 
+  const [width, setWidth] = useState(0);
+  const [height, setheight] = useState(0);
+
+  useEffect(() => {
+    setWidth(window.innerWidth);
+    setheight(window.innerHeight);
+
+    const handleResize = () => {
+      setWidth(window.innerWidth);
+      setheight(window.innerHeight);
+    };
+    window.addEventListener("resize", handleResize);
+
+    return () => window.removeEventListener("resize", handleResize);
+  }, []);
+
   const { stageScale, stagePos, ...draggingProps } = useDragging();
 
   const selectShapesInArea = (selectionBox: SelectionBox) =>
-    setShapes((p) =>
-      p.map((shape) => ({
+    setShapes((prev) =>
+      prev.map((shape) => ({
         ...shape,
         selected: isShapeInSelection(shape, selectionBox),
       }))
     );
 
   const onSelectShape = (shapeId: string) =>
-    setShapes((p) =>
-      p.map((shape) => ({ ...shape, selected: shape.id === shapeId }))
+    setShapes((prev) =>
+      prev.map((shape) => ({ ...shape, selected: shape.id === shapeId }))
     );
 
   const unselectShapes = () =>
-    setShapes((p) => p.map((shape) => ({ ...shape, selected: false })));
+    setShapes((prev) => prev.map((shape) => ({ ...shape, selected: false })));
 
   const handleAppendShape = (shape: Shape) =>
-    setShapes((p) => [
-      ...p.map((x) => ({ ...x, selected: false })),
-      { ...shape, selected: true },
+    setShapes((prev) => [
+      ...prev.map((x) => ({ ...x, selected: false })),
+      { ...shape, selected: true, strokeWidth: defaultStyle.strokeWidth },
     ]);
 
   const { selectedArea, previewLayerRef, ...selectHandlers } = useMouseArea({
@@ -73,8 +89,8 @@ function App() {
 
     const shapeId = e.target.attrs?.id as string;
 
-    setShapes((p) =>
-      p.map((shape) =>
+    setShapes((prev) =>
+      prev.map((shape) =>
         shape.id === shapeId
           ? { ...shape, x: e.target.x(), y: e.target.y() }
           : shape
@@ -93,12 +109,14 @@ function App() {
       <ShapeOptions
         style={defaultStyle}
         deleteShapes={() =>
-          setShapes((p) => p.filter((shape) => !shape.selected))
+          setShapes((prev) => prev.filter((shape) => !shape.selected))
         }
         onApplyStyles={(style) => {
-          setDefaultStyle((p) => ({ ...p, ...style }));
-          setShapes((p) =>
-            p.map((shape) => (shape.selected ? { ...shape, ...style } : shape))
+          setDefaultStyle((prev) => ({ ...prev, ...style }));
+          setShapes((prev) =>
+            prev.map((shape) =>
+              shape.selected ? { ...shape, ...style } : shape
+            )
           );
         }}
         activeShapes={activeShapes}
@@ -110,9 +128,9 @@ function App() {
         {...selectHandlers}
         scale={{ x: stageScale, y: stageScale }}
         style={{ cursor: tool === Tool.GRAB ? "grab" : "default" }}
-        className="bg-gray-900"
-        width={window.innerWidth}
-        height={window.innerHeight}
+        className="bg-zinc-900"
+        width={width}
+        height={height}
       >
         <Layer>
           <Shapes tool={tool} shapes={shapes} onDragEnd={handleDragShape} />

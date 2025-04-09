@@ -13,7 +13,8 @@ const Button: FC<ButtonProps> = ({ active, onClick, children, className }) => {
       className={cn(
         "bg-transparent relative hover:bg-gray-700 text-gray-300",
         {
-          "bg-blue-400 hover:bg-blue-500 text-gray-800": active,
+          "border-solid bg-indigo-400 bg-opacity-20 hover:bg-indigo-500 hover:border-solid  text-gray-800":
+            active,
         },
         className
       )}

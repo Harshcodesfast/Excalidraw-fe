@@ -25,9 +25,10 @@ export const useDragging = () => {
         y: (pointerPosition.y - stage.y()) / oldScale,
       };
 
-      // Якщо змінити < на >, то зум буде інвертований
       const newScale =
-        e.evt.deltaY < 0 ? oldScale * scaleBy : oldScale / scaleBy;
+        (e.evt as WheelEvent).deltaY < 0
+          ? oldScale * scaleBy
+          : oldScale / scaleBy;
 
       const finalScale = getLimitedScale(
         newScale,
